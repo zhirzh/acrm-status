@@ -1,0 +1,10 @@
+export type Tenant = {
+  id: string
+  name: string
+  domain: string
+}
+
+export type Service = {
+  id: string
+  name: string
+}

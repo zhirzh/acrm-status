@@ -3,12 +3,9 @@
 @tailwind utilities;
 
 body {
-  /* tailwind text-gray-900 */
-  color: #111827;
+  color: #111827; /* tailwind gray-900 */
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+a {
+  color: #2563eb; /* tailwind blue-500 */
 }
