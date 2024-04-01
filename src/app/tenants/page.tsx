@@ -1,6 +1,10 @@
-import Brand from '@/components/Brand'
+import Brand, { brandTitle } from '@/components/Brand'
 import { tenants } from '@/constants'
 import TenantCard from './TenantCard'
+
+export const metadata = {
+  title: brandTitle,
+}
 
 export default function TenantsPage() {
   return (
