@@ -1,17 +1,27 @@
+import { services } from '@/constants'
 import { Service, Tenant } from '@/types'
-import { services } from './constants'
+import { Time, isTimeoutError } from '@/utils'
+
+const nextjsTimeout = Time.seconds(10)
+const apiTimeout = nextjsTimeout - Time.seconds(1)
 
 async function fetchServiceStatus(tenant: Tenant, service: Service) {
   const url = `https://${service.id}.${tenant.domain}/health-check`
+
+  const signal = AbortSignal.timeout(apiTimeout)
 
   try {
     const res = await fetch(url, {
       method: 'HEAD',
       cache: 'no-store',
+      signal,
     })
     return res.status
   } catch (err) {
-    console.error(err)
+    if (isTimeoutError(err)) {
+      return 0
+    }
+
     return -1
   }
 }

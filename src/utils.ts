@@ -17,3 +17,20 @@ export function cx(...classNames: Array<ClassName>) {
 export function delay<T>(ms: number, value?: T) {
   return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
 }
+
+type TimeoutError = DOMException & { name: 'TimeoutError' }
+export function isTimeoutError(err: unknown): err is TimeoutError {
+  return err instanceof DOMException && err.name === 'TimeoutError'
+}
+
+export const Time = {
+  seconds(n: number) {
+    return n * 1000
+  },
+  minutes(n: number) {
+    return n * 60 * 1000
+  },
+  hours(n: number) {
+    return n * 60 * 60 * 1000
+  },
+}

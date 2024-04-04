@@ -1,10 +1,11 @@
 import Brand, { brandTitle } from '@/components/Brand'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { tenants } from '@/constants'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
 import NavCrumbs from './NavCrumbs'
-import ServicesGrid, { ServicesGridLoading } from './ServicesGrid'
+import ServicesGrid, { ServicesGridError, ServicesGridLoading } from './ServicesGrid'
 
 export const dynamicParams = false
 
@@ -46,7 +47,9 @@ export default function ServicesPage({ params }: { params: Params }) {
         </div>
 
         <Suspense fallback={<ServicesGridLoading />}>
-          <ServicesGrid tenant={tenant} />
+          <ErrorBoundary fallback={<ServicesGridError />}>
+            <ServicesGrid tenant={tenant} />
+          </ErrorBoundary>
         </Suspense>
       </div>
     </div>
