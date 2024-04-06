@@ -1,11 +1,10 @@
-import { services } from '@/constants'
 import { Service, Tenant } from '@/types'
 import { Time, isTimeoutError } from '@/utils'
 
 const nextjsTimeout = Time.seconds(10)
 const apiTimeout = nextjsTimeout - Time.seconds(1)
 
-async function fetchServiceStatus(tenant: Tenant, service: Service) {
+export async function fetchServiceStatus(tenant: Tenant, service: Service) {
   const url = `https://${service.id}.${tenant.domain}/health-check`
 
   const signal = AbortSignal.timeout(apiTimeout)
@@ -16,6 +15,7 @@ async function fetchServiceStatus(tenant: Tenant, service: Service) {
       cache: 'no-store',
       signal,
     })
+
     return res.status
   } catch (err) {
     if (isTimeoutError(err)) {
@@ -26,15 +26,32 @@ async function fetchServiceStatus(tenant: Tenant, service: Service) {
   }
 }
 
-export async function fetchServiceStatuses(tenant: Tenant) {
-  const serviceStatuses: Record<Service['id'], number> = {}
+type User = {
+  id: number
+  email: string
+  name: string
+  sub_tenant: {
+    id: number
+    name: string
+  }
+}
 
-  await Promise.all(
-    services.map(async (s) => {
-      const status = await fetchServiceStatus(tenant, s)
-      serviceStatuses[s.id] = status
-    }),
-  )
+export async function validateAuthToken(tenant: Tenant, authToken: string) {
+  const url = `https://employee.${tenant.domain}/api/v0/validate`
 
-  return serviceStatuses
+  const signal = AbortSignal.timeout(apiTimeout)
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      cookie: `auth_token=${authToken}`,
+    },
+    cache: 'no-store',
+    signal,
+  })
+
+  if (res.ok) {
+    const user: User = await res.json()
+    return user
+  }
 }

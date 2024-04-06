@@ -39,6 +39,9 @@ export function tryCatch<T, E = Error>(fn: () => T): TryCatchResult<T, E> {
 }
 
 export const Time = {
+  milli(n: number) {
+    return n
+  },
   seconds(n: number) {
     return n * 1000
   },

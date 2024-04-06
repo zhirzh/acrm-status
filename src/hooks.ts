@@ -1,7 +1,8 @@
 'use client'
 
 import { Nullable } from '@/utils'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { flushSync } from 'react-dom'
 
 export function useEscapeKey(onEscapeKey: () => void) {
   useEffect(() => {
@@ -75,4 +76,25 @@ function getFocusableElements(element: HTMLElement) {
   const formElements = ['input:not([type=hidden])', 'button', 'textarea']
   const query = formElements.map((x) => `${x}:not([disabled])`).join(', ')
   return Array.from(element.querySelectorAll<HTMLElement>(query))
+}
+
+// TODO: replace with useActionState hook from react
+export function useActionState<State>(
+  serverAction: (formData: FormData) => Promise<State>,
+  initialState: State,
+) {
+  const [state, setState] = useState(initialState)
+  const [pending, setPending] = useState(false)
+
+  const dispatch = async (formData: FormData) => {
+    flushSync(() => {
+      setPending(true)
+    })
+
+    const nextState = await serverAction(formData)
+    setState(nextState)
+    setPending(false)
+  }
+
+  return [state, dispatch, pending] as const
 }

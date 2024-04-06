@@ -11,8 +11,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={inter.className}>
         {children}
 
-        <Analytics debug />
-        <SpeedInsights debug />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
