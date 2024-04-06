@@ -1,7 +1,7 @@
-import { fetchServiceStatuses } from '@/apis'
 import Grid from '@/components/Grid'
 import RouterRefresh from '@/components/RouterRefresh'
 import { services } from '@/constants'
+import { fetchServiceStatuses } from '@/helpers'
 import { Service, Tenant } from '@/types'
 import { cx } from '@/utils'
 

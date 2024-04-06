@@ -1,9 +1,11 @@
+import { validateAuthToken } from '@/apis'
 import Brand, { brandTitle } from '@/components/Brand'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { tenants } from '@/constants'
+import { services, tenants } from '@/constants'
+import { getTenantCookie } from '@/helpers'
 import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import { Suspense } from 'react'
+import LoginButton from './LoginButton'
 import NavCrumbs from './NavCrumbs'
 import ServicesGrid, { ServicesGridError, ServicesGridLoading } from './ServicesGrid'
 
@@ -16,10 +18,7 @@ type Params = {
 export function generateMetadata({ params }: { params: Params }): Metadata {
   const { tenantId } = params
 
-  const tenant = tenants.find((t) => t.id === tenantId)
-  if (!tenant) {
-    notFound()
-  }
+  const tenant = tenants.find((t) => t.id === tenantId)!
 
   return {
     title: `${brandTitle} / ${tenant.name}`,
@@ -30,19 +29,20 @@ export function generateStaticParams() {
   return tenants.map<Params>((tenant) => ({ tenantId: tenant.id }))
 }
 
-export default function ServicesPage({ params }: { params: Params }) {
+export default async function ServicesPage({ params }: { params: Params }) {
   const { tenantId } = params
 
-  const tenant = tenants.find((t) => t.id === tenantId)
-  if (!tenant) {
-    notFound()
-  }
+  const tenant = tenants.find((t) => t.id === tenantId)!
 
   return (
     <div className='p-5 pb-24'>
       <div className='mx-auto max-w-[700px]'>
         <div className='mb-3'>
-          <Brand />
+          <div className='flex justify-between'>
+            <Brand />
+            <LoginButton tenant={tenant} />
+          </div>
+
           <NavCrumbs tenant={tenant} />
         </div>
 
