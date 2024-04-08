@@ -1,3 +1,5 @@
+import { Tenant, Service, ServiceApi } from '@/types'
+
 export type Nullable<T> = T | null
 
 type SkipClassName = boolean | null | undefined
@@ -22,6 +24,15 @@ export function draf(cb: FrameRequestCallback) {
   requestAnimationFrame(() => {
     requestAnimationFrame(cb)
   })
+}
+
+export function getServiceApiUrl(
+  tenant: Tenant,
+  service: Service,
+  serviceApi: ServiceApi,
+  authToken: string,
+) {
+  return `https://${service.id}.${tenant.domain}/api/${serviceApi.url}?auth_token=${authToken}`
 }
 
 type TimeoutError = DOMException & { name: 'TimeoutError' }

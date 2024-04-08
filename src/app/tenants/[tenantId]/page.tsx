@@ -5,11 +5,12 @@ import { tenants } from '@/constants'
 import { getTenantCookie } from '@/helpers'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
+import ServiceApiGrid, { ServiceApiGridError, ServiceApiGridLoading } from './ServiceApiGrid'
 import LoginButton from './LoginButton'
 import LogoutButton from './LogoutButton'
 import NavCrumbs from './NavCrumbs'
 import ServicesGrid, { ServicesGridError, ServicesGridLoading } from './ServicesGrid'
-import { Params } from './types'
+import Params from './params'
 
 export const dynamicParams = false
 
@@ -52,6 +53,18 @@ export default async function ServicesPage({ params }: { params: Params }) {
             <ServicesGrid tenant={tenant} />
           </ErrorBoundary>
         </Suspense>
+
+        {authToken && (
+          <>
+            <h2 className='mb-3 mt-10 text-xl'>APIs</h2>
+
+            <Suspense fallback={<ServiceApiGridLoading tenant={tenant} />}>
+              <ErrorBoundary fallback={<ServiceApiGridError tenant={tenant} />}>
+                <ServiceApiGrid tenant={tenant} authToken={authToken} />
+              </ErrorBoundary>
+            </Suspense>
+          </>
+        )}
       </div>
     </div>
   )

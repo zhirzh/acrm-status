@@ -9,7 +9,7 @@ export default function LogoutButton({ tenant, user }: { tenant: Tenant; user: U
       <div className='border-r border-gray-200 px-3 py-2 text-sm text-gray-700'>{user.name}</div>
       <button
         onClick={() => logoutAction(tenant.id)}
-        className='rounded-r-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50'
+        className='rounded-r-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50'
       >
         Sign out
       </button>

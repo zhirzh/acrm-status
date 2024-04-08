@@ -56,7 +56,7 @@ function ServiceCard({ service, status }: { service: Service; status?: number })
   const label = status === 0 ? 'TLE' : status === -1 ? '???' : status
 
   return (
-    <div className='flex items-baseline justify-between bg-white py-4 pl-4 pr-6'>
+    <div className='flex items-baseline justify-between py-4 pl-4 pr-6'>
       <div>{service.name}</div>
 
       {status === undefined ? (

@@ -14,10 +14,32 @@ export const services: Service[] = [
   { id: 'acl', name: 'ACL' },
   { id: 'calling', name: 'Calling' },
   { id: 'dashboard', name: 'Dashboard' },
-  { id: 'data', name: 'Data' },
-  { id: 'employee', name: 'Employee' },
+  {
+    id: 'data',
+    name: 'Data',
+    apis: [
+      //
+      { id: 'assignments', url: 'v1/assignments' },
+    ],
+  },
+  {
+    id: 'employee',
+    name: 'Employee',
+    apis: [
+      //
+      { id: 'auth', url: 'v0/authenticate-token' },
+    ],
+  },
   { id: 'forms', name: 'Forms' },
-  { id: 'lead', name: 'Lead' },
+  {
+    id: 'lead',
+    name: 'Lead',
+    apis: [
+      //
+      { id: 'metadata', url: 'v0/metadata' },
+      { id: 'sync', url: 'v0/leads/sync' },
+    ],
+  },
   { id: 'mail', name: 'Mail' },
   { id: 'meta', name: 'Meta' },
   { id: 'plutus', name: 'Plutus' },

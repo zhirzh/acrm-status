@@ -7,6 +7,12 @@ export type Tenant = {
 export type Service = {
   id: string
   name: string
+  apis?: ServiceApi[]
+}
+
+export type ServiceApi = {
+  id: string
+  url: string
 }
 
 export type User = {

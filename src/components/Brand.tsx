@@ -1,5 +1,5 @@
 export const brandTitle = 'ACRM Status'
 
 export default function Brand() {
-  return <div className='text-2xl'>{brandTitle}</div>
+  return <h1 className='text-2xl'>{brandTitle}</h1>
 }
