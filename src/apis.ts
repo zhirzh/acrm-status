@@ -1,4 +1,4 @@
-import { Service, Tenant } from '@/types'
+import { Service, Tenant, User } from '@/types'
 import { Time, isTimeoutError } from '@/utils'
 
 const nextjsTimeout = Time.seconds(10)
@@ -23,16 +23,6 @@ export async function fetchServiceStatus(tenant: Tenant, service: Service) {
     }
 
     return -1
-  }
-}
-
-type User = {
-  id: number
-  email: string
-  name: string
-  sub_tenant: {
-    id: number
-    name: string
   }
 }
 

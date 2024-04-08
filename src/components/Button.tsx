@@ -11,7 +11,7 @@ export default function Button({ children, fulWidth, disabled, ...props }: Props
       {...props}
       disabled={disabled}
       className={cx(
-        'rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm outline-offset-2',
+        'rounded-md px-4 py-2 text-sm font-medium text-white shadow-sm',
         fulWidth && 'w-full',
         disabled
           ? 'cursor-not-allowed bg-indigo-400 hover:bg-indigo-400'

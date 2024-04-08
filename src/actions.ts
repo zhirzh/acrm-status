@@ -17,7 +17,7 @@ export async function loginAction(formData: FormData) {
     return 'Invalid auth token'
   }
 
-  const tenantCookie = getTenantCookie(tenantId)
+  const tenantCookie = getTenantCookie(tenant)
 
   const nextCookieValue = JSON.stringify({
     ...tenantCookie,
@@ -36,4 +36,25 @@ export async function loginAction(formData: FormData) {
   cookies().set(nextCookie)
 
   return 'ok'
+}
+
+export async function logoutAction(tenantId: string) {
+  const tenant = tenants.find((t) => t.id === tenantId)!
+
+  const tenantCookie = getTenantCookie(tenant)
+
+  delete tenantCookie.authToken
+
+  const nextCookieValue = JSON.stringify(tenantCookie)
+
+  const nextCookie: ResponseCookie = {
+    name: tenantId,
+    value: nextCookieValue,
+    path: '/',
+    sameSite: 'strict',
+    httpOnly: true,
+    secure: true,
+  }
+
+  cookies().set(nextCookie)
 }

@@ -21,8 +21,8 @@ type TenantCookie = {
   authToken: string
 }
 
-export function getTenantCookie(tenantId: string) {
-  const cookie = cookies().get(tenantId)
+export function getTenantCookie(tenant: Tenant) {
+  const cookie = cookies().get(tenant.id)
   if (!cookie) {
     return {}
   }
