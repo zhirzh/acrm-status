@@ -1,40 +1,8 @@
-import { fetchServiceApiStatus, fetchServiceStatus } from '@/apis'
-import { services } from '@/constants'
-import { Service, ServiceApi, Tenant } from '@/types'
-import { tryCatch } from '@/utils'
+import { Tenant } from '@/types'
+import { Maybe, tryCatch } from '@/utils'
 import { cookies } from 'next/headers'
-
-export async function fetchServiceStatuses(tenant: Tenant) {
-  const serviceStatuses: Record<Service['id'], number> = {}
-
-  const tasks = services.map(async (s) => {
-    const status = await fetchServiceStatus(tenant, s)
-    serviceStatuses[s.id] = status
-  })
-
-  await Promise.all(tasks)
-
-  return serviceStatuses
-}
-
-export async function fetchServiceApiStatuses(tenant: Tenant, authToken: string) {
-  const apiStatuses: Record<ServiceApi['id'], number> = {}
-
-  const tasks = services.flatMap((s) => {
-    if (!s.apis) {
-      return []
-    }
-
-    return s.apis.map(async (a) => {
-      const status = await fetchServiceApiStatus(tenant, s, a, authToken)
-      apiStatuses[s.id] = status
-    })
-  })
-
-  await Promise.all(tasks)
-
-  return apiStatuses
-}
+import { cache } from 'react'
+import { validateAuthToken } from './apis'
 
 type TenantCookie = {
   authToken: string
@@ -54,3 +22,13 @@ export function getTenantCookie(tenant: Tenant) {
 
   return data
 }
+
+export const getUser = cache(async (tenant: Tenant, authToken: Maybe<string>) => {
+  if (!authToken) {
+    return
+  }
+
+  const user = await validateAuthToken(tenant, authToken)
+
+  return user
+})

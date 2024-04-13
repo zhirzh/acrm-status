@@ -4,10 +4,10 @@ import { Component } from 'react'
 
 type Props = {
   children: React.ReactNode
-  fallback: React.ReactNode
+  fallback?: React.ReactNode | ((reset: () => void) => React.ReactNode)
 }
 
-export class ErrorBoundary extends Component<Props> {
+export default class ErrorBoundary extends Component<Props> {
   state = { error: null }
 
   static getDerivedStateFromError(error: unknown) {
@@ -19,11 +19,22 @@ export class ErrorBoundary extends Component<Props> {
     console.log(componentStack)
   }
 
+  reset = () => {
+    this.setState({ error: null })
+  }
+
   render() {
-    if (this.state.error) {
-      return this.props.fallback
+    const { children, fallback } = this.props
+    const { error } = this.state
+
+    if (error) {
+      if (typeof fallback === 'function') {
+        return fallback(this.reset)
+      }
+
+      return fallback
     }
 
-    return this.props.children
+    return children
   }
 }

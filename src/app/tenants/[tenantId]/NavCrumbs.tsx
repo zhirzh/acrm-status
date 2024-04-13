@@ -1,7 +1,8 @@
-import { Tenant } from '@/types'
 import Link from 'next/link'
+import { tenantCache } from './cache'
 
-export default function NavCrumbs({ tenant }: { tenant: Tenant }) {
+export default function NavCrumbs() {
+  const tenant = tenantCache.get()
   return (
     <div className='space-x-0.5'>
       <Link href={{ pathname: '/tenants' }} className='px-0.5 text-sm'>

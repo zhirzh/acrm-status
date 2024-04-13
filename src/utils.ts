@@ -1,4 +1,7 @@
 import { Tenant, Service, ServiceApi } from '@/types'
+import { cache } from 'react'
+
+export type Maybe<T> = T | undefined
 
 export type Nullable<T> = T | null
 
@@ -62,4 +65,21 @@ export const Time = {
   hours(n: number) {
     return n * 60 * 60 * 1000
   },
+}
+
+export function createCache<T>(displayName: string) {
+  const empty = Symbol()
+
+  const cacheRef = cache(() => ({ current: empty as T }))
+
+  return {
+    get() {
+      const { current } = cacheRef()
+      if (current === empty) throw new Error(`${displayName} cache not set`)
+      return current
+    },
+    set(value: T) {
+      cacheRef().current = value
+    },
+  }
 }

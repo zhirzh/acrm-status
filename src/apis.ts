@@ -68,7 +68,8 @@ export async function validateAuthToken(tenant: Tenant, authToken: string) {
   })
 
   if (res.ok) {
-    const user: User = await res.json()
+    const user = (await res.json()) as User
+    user.auth_token = authToken
     return user
   }
 }

@@ -9,7 +9,7 @@ type Params = {
   apiId: string
 }
 
-export async function GET(req: NextRequest, { params }: { params: Params }) {
+export function GET(req: NextRequest, { params }: { params: Params }) {
   const { tenantId, serviceId, apiId } = params
 
   const tenant = tenants.find((t) => t.id === tenantId)!
