@@ -1,13 +1,13 @@
 'use client'
 
-import { Time } from '@/utils'
+import { Duration } from '@/utils'
 import { useEffect, useState } from 'react'
 
 type Props = {
   delay?: number
 }
 
-export default function ClientErrorTest({ delay = Time.seconds(1) }: Props) {
+export default function ClientErrorTest({ delay = Duration.second() }: Props) {
   console.warn(
     'ClientErrorTest should only be used for testing purposes. Do not use in production.',
   )

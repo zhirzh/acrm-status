@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { tenantCache } from './cache'
+import { tenantCache } from '../cache'
 
 export default function NavCrumbs() {
   const tenant = tenantCache.get()

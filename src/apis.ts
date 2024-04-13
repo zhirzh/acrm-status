@@ -1,8 +1,8 @@
 import { Service, ServiceApi, Tenant, User } from '@/types'
-import { Time, getServiceApiUrl, isTimeoutError } from '@/utils'
+import { Duration, getServiceApiUrl, isTimeoutError } from '@/utils'
 
-const nextjsTimeout = Time.seconds(10)
-const apiTimeout = nextjsTimeout - Time.seconds(1)
+const nextjsTimeout = Duration.second(10)
+const apiTimeout = nextjsTimeout - Duration.second()
 
 export async function fetchServiceStatus(tenant: Tenant, service: Service) {
   const url = `https://${service.id}.${tenant.domain}/health-check`

@@ -1,9 +1,47 @@
 import { Tenant, Service, ServiceApi } from '@/types'
 import { cache } from 'react'
 
+// TYPES
+
 export type Maybe<T> = T | undefined
 
 export type Nullable<T> = T | null
+
+// OBJECTS
+
+export const Duration = {
+  millisecond(n: number = 1) {
+    return n
+  },
+  second(n: number = 1) {
+    return n * 1000
+  },
+  minute(n: number = 1) {
+    return n * 60 * 1000
+  },
+  hour(n: number = 1) {
+    return n * 60 * 60 * 1000
+  },
+}
+
+// FUNCTIONS
+
+export function createCache<T>(displayName: string) {
+  const empty = Symbol()
+
+  const cacheRef = cache(() => ({ current: empty as T }))
+
+  return {
+    get() {
+      const { current } = cacheRef()
+      if (current === empty) throw new Error(`${displayName} cache not set`)
+      return current
+    },
+    set(value: T) {
+      cacheRef().current = value
+    },
+  }
+}
 
 type SkipClassName = boolean | null | undefined
 type ClassName = string | SkipClassName | Record<string, SkipClassName>
@@ -49,37 +87,5 @@ export function tryCatch<T, E = Error>(fn: () => T): TryCatchResult<T, E> {
     return [fn(), undefined]
   } catch (e: any) {
     return [undefined, e]
-  }
-}
-
-export const Time = {
-  milli(n: number) {
-    return n
-  },
-  seconds(n: number) {
-    return n * 1000
-  },
-  minutes(n: number) {
-    return n * 60 * 1000
-  },
-  hours(n: number) {
-    return n * 60 * 60 * 1000
-  },
-}
-
-export function createCache<T>(displayName: string) {
-  const empty = Symbol()
-
-  const cacheRef = cache(() => ({ current: empty as T }))
-
-  return {
-    get() {
-      const { current } = cacheRef()
-      if (current === empty) throw new Error(`${displayName} cache not set`)
-      return current
-    },
-    set(value: T) {
-      cacheRef().current = value
-    },
   }
 }

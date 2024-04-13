@@ -1,11 +1,11 @@
+import { fetchServiceStatus } from '@/apis'
 import Grid from '@/components/Grid'
 import RouterRefresh from '@/components/RouterRefresh'
 import { services } from '@/constants'
 import { Service } from '@/types'
-import { Suspense } from 'react'
-import { fetchServiceStatus } from '@/apis'
 import { cx } from '@/utils'
-import { tenantCache } from './cache'
+import { Suspense } from 'react'
+import { tenantCache } from '../cache'
 
 export default function ServicesGrid() {
   return (

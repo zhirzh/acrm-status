@@ -7,7 +7,7 @@ import { Service, ServiceApi } from '@/types'
 import { cx } from '@/utils'
 import Link from 'next/link'
 import { Suspense } from 'react'
-import { tenantCache, userCache } from './cache'
+import { tenantCache, userCache } from '../cache'
 
 export default function ServiceApiGrid() {
   return (
