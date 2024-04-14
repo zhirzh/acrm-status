@@ -3,12 +3,12 @@ import { tenants } from '@/constants'
 import { getTenantCookie, getUser } from '@/helpers'
 import { Metadata } from 'next'
 import { Suspense } from 'react'
+import { authTokenCache, tenantCache, userCache } from './cache'
 import LoginButton from './components/LoginButton'
 import LogoutButton from './components/LogoutButton'
 import NavCrumbs from './components/NavCrumbs'
 import ServiceApiGrid from './components/ServiceApiGrid'
 import ServicesGrid from './components/ServicesGrid'
-import { authTokenCache, tenantCache, userCache } from './cache'
 
 export const dynamicParams = false
 
@@ -16,11 +16,15 @@ type Params = {
   tenantId: string
 }
 
+type Props = {
+  params: Params
+}
+
 export function generateStaticParams() {
   return tenants.map<Params>((tenant) => ({ tenantId: tenant.id }))
 }
 
-export function generateMetadata({ params }: { params: Params }): Metadata {
+export function generateMetadata({ params }: Props): Metadata {
   const { tenantId } = params
 
   const tenant = tenants.find((t) => t.id === tenantId)!
@@ -30,7 +34,7 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
   }
 }
 
-export default function ServicesPage({ params }: { params: Params }) {
+export default function ServicesPage({ params }: Props) {
   const { tenantId } = params
 
   const tenant = tenants.find((t) => t.id === tenantId)!

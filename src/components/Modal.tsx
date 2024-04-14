@@ -8,10 +8,11 @@ import React, { ElementRef, useEffect, useRef, useState } from 'react'
 type Props = {
   children: React.ReactNode
   open: boolean
-  onClose: () => void
+  closeModal: () => void
+  onClose?: () => void
 }
 
-export default function Modal({ children, open, onClose }: Props) {
+export default function Modal({ children, open, closeModal, onClose }: Props) {
   const modalRef = useRef<ElementRef<'div'>>(null)
 
   const [visible, setVisible] = useState(false)
@@ -29,8 +30,14 @@ export default function Modal({ children, open, onClose }: Props) {
     }
   }, [open])
 
+  useEffect(() => {
+    if (unmounted) {
+      onClose?.()
+    }
+  }, [unmounted, onClose])
+
   useEscapeKey(() => {
-    onClose()
+    closeModal()
   })
 
   useFocusTrap(modalRef)
@@ -52,7 +59,7 @@ export default function Modal({ children, open, onClose }: Props) {
         const backdrop = e.currentTarget
         const backdropClicked = e.target === backdrop
         if (backdropClicked) {
-          onClose()
+          closeModal()
         }
       }}
       onTransitionEnd={() => {

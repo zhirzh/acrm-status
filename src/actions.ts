@@ -3,8 +3,8 @@
 import { validateAuthToken } from '@/apis'
 import { tenants } from '@/constants'
 import { getTenantCookie } from '@/helpers'
-import { ResponseCookie } from 'next/dist/compiled/@edge-runtime/cookies'
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 
 export async function loginAction(formData: FormData) {
   const tenantId = formData.get('tenantId') as string
@@ -24,18 +24,16 @@ export async function loginAction(formData: FormData) {
     authToken,
   })
 
-  const nextCookie: ResponseCookie = {
+  cookies().set({
     name: tenantId,
     value: nextCookieValue,
     path: '/',
     sameSite: 'strict',
     httpOnly: true,
     secure: true,
-  }
+  })
 
-  cookies().set(nextCookie)
-
-  return 'ok'
+  redirect(`/tenants/${tenantId}`)
 }
 
 export async function logoutAction(tenantId: string) {
@@ -47,14 +45,12 @@ export async function logoutAction(tenantId: string) {
 
   const nextCookieValue = JSON.stringify(tenantCookie)
 
-  const nextCookie: ResponseCookie = {
+  cookies().set({
     name: tenantId,
     value: nextCookieValue,
     path: '/',
     sameSite: 'strict',
     httpOnly: true,
     secure: true,
-  }
-
-  cookies().set(nextCookie)
+  })
 }

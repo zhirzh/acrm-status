@@ -86,7 +86,7 @@ export function useActionState<State>(
   const [state, setState] = useState(initialState)
   const [pending, setPending] = useState(false)
 
-  const dispatch = async (formData: FormData) => {
+  const action = async (formData: FormData) => {
     flushSync(() => {
       setPending(true)
     })
@@ -96,5 +96,5 @@ export function useActionState<State>(
     setPending(false)
   }
 
-  return [state, dispatch, pending] as const
+  return [state, action, pending] as const
 }

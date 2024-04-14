@@ -9,7 +9,7 @@ import { useFormStatus } from 'react-dom'
 
 type Props = {
   tenant: Tenant
-  onSubmit: () => void
+  onSubmit?: () => void
 }
 
 export default function LoginForm({ tenant, onSubmit }: Props) {
@@ -18,16 +18,16 @@ export default function LoginForm({ tenant, onSubmit }: Props) {
   const [formState, formAction, pending] = useActionState(loginAction, '')
 
   useEffect(() => {
-    if (!formState) {
+    if (formState === '') {
       return
     }
 
-    if (formState === 'ok') {
-      onSubmit()
+    if (typeof formState === 'string') {
+      alert(formState)
       return
     }
 
-    alert(formState)
+    onSubmit?.()
   }, [formState, onSubmit])
 
   return (
@@ -65,6 +65,7 @@ export default function LoginForm({ tenant, onSubmit }: Props) {
     </div>
   )
 }
+
 function SubmitButton({ disabled }: { disabled: boolean }) {
   const { pending } = useFormStatus()
 
