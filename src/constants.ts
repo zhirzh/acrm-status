@@ -31,6 +31,7 @@ export const services: Service[] = [
     ],
   },
   { id: 'forms', name: 'Forms' },
+  { id: 'insightq', name: 'Insight IQ' },
   {
     id: 'lead',
     name: 'Lead',
