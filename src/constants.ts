@@ -4,9 +4,8 @@ export const tenants: Tenant[] = [
   { id: 'staging', name: 'Staging', domain: 'beta.staging.anarock.com' },
   { id: 'anarock', name: 'Anarock', domain: 'anarock.com' },
   { id: 'tech', name: 'Tech', domain: 'anarock.tech' },
-  { id: 'kohinoor', name: 'Kohinoor', domain: 'kohinoor-pune.com' },
-  { id: 'kw', name: 'KW Group', domain: 'kwgroup.net' },
-  { id: 'old-staging', name: 'Old Staging', domain: 'staging.anarock.com' },
+  { id: 'kw', name: 'KW', domain: 'kwgroup.net' },
+  { id: 'acp', name: 'ACP', domain: 'ddp.anarock.com' },
 ]
 
 export const services: Service[] = [
