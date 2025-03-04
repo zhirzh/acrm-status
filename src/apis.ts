@@ -1,28 +1,29 @@
-import { Service, ServiceApi, Tenant, User } from '@/types'
-import { Duration, getServiceApiUrl, isTimeoutError } from '@/utils'
+import { Service, ServiceApi } from "./types";
+import { Tenant } from "./types";
+import { getServiceApiUrl, isTimeoutError } from "@/utils";
 
-const nextjsTimeout = Duration.second(10)
-const apiTimeout = nextjsTimeout - Duration.second()
+const vercelWorkerTimeoutMs = 10 * 1000;
+
+export enum ErrorStatus {
+  Error = "Error",
+  Timeout = "Timeout",
+}
 
 export async function fetchServiceStatus(tenant: Tenant, service: Service) {
-  const url = `https://${service.id}.${tenant.domain}/health-check`
+  if (service.id === "test") {
+    return fetchTestServiceStatus();
+  }
 
-  const signal = AbortSignal.timeout(apiTimeout)
+  const url = `https://${service.id}.${tenant.domain}/health-check`;
+
+  const signal = AbortSignal.timeout(vercelWorkerTimeoutMs);
 
   try {
-    const res = await fetch(url, {
-      method: 'HEAD',
-      cache: 'no-store',
-      signal,
-    })
-
-    return res.status
-  } catch (err) {
-    if (isTimeoutError(err)) {
-      return 0
-    }
-
-    return -1
+    const res = await fetch(url, { method: "HEAD", cache: "no-store", signal });
+    return res.status;
+  } catch (e) {
+    if (isTimeoutError(e)) return ErrorStatus.Timeout;
+    return ErrorStatus.Error;
   }
 }
 
@@ -30,46 +31,22 @@ export async function fetchServiceApiStatus(
   tenant: Tenant,
   service: Service,
   serviceApi: ServiceApi,
-  authToken: string,
 ) {
-  const url = getServiceApiUrl(tenant, service, serviceApi, authToken)
+  const url = getServiceApiUrl(tenant, service, serviceApi);
 
-  const signal = AbortSignal.timeout(apiTimeout)
+  const signal = AbortSignal.timeout(vercelWorkerTimeoutMs);
 
   try {
-    const res = await fetch(url, {
-      method: 'HEAD',
-      cache: 'no-store',
-      signal,
-    })
-
-    return res.status
-  } catch (err) {
-    if (isTimeoutError(err)) {
-      return 0
-    }
-
-    return -1
+    const res = await fetch(url, { method: "HEAD", cache: "no-store", signal });
+    return res.status;
+  } catch (e) {
+    if (isTimeoutError(e)) return ErrorStatus.Timeout;
+    return ErrorStatus.Error;
   }
 }
 
-export async function validateAuthToken(tenant: Tenant, authToken: string) {
-  const url = `https://employee.${tenant.domain}/api/v0/validate`
-
-  const signal = AbortSignal.timeout(apiTimeout)
-
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      cookie: `auth_token=${authToken}`,
-    },
-    cache: 'no-store',
-    signal,
-  })
-
-  if (res.ok) {
-    const user = (await res.json()) as User
-    user.auth_token = authToken
-    return user
-  }
+async function fetchTestServiceStatus() {
+  const url = "https://httpstat.us/random/200,400,500";
+  const res = await fetch(url, { cache: "no-store" });
+  return res.status;
 }

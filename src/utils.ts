@@ -1,91 +1,33 @@
-import { Tenant, Service, ServiceApi } from '@/types'
-import { cache } from 'react'
+import { Tenant, Service, ServiceApi } from "@/types";
 
-// TYPES
-
-export type Maybe<T> = T | undefined
-
-export type Nullable<T> = T | null
-
-// OBJECTS
-
-export const Duration = {
-  millisecond(n: number = 1) {
-    return n
-  },
-  second(n: number = 1) {
-    return n * 1000
-  },
-  minute(n: number = 1) {
-    return n * 60 * 1000
-  },
-  hour(n: number = 1) {
-    return n * 60 * 60 * 1000
-  },
-}
-
-// FUNCTIONS
-
-export function createCache<T>(displayName: string) {
-  const empty = Symbol()
-
-  const cacheRef = cache(() => ({ current: empty as T }))
-
-  return {
-    get() {
-      const { current } = cacheRef()
-      if (current === empty) throw new Error(`${displayName} cache not set`)
-      return current
-    },
-    set(value: T) {
-      cacheRef().current = value
-    },
-  }
-}
-
-type SkipClassName = boolean | null | undefined
-type ClassName = string | SkipClassName | Record<string, SkipClassName>
+type SkipClassName = boolean | null | undefined;
+type ClassName = string | SkipClassName | Record<string, SkipClassName>;
 export function cx(...classNames: Array<ClassName>) {
   return classNames
     .filter((c): c is Exclude<ClassName, SkipClassName> => !!c)
     .flatMap((c) => {
-      if (typeof c === 'string') {
-        return c
+      if (typeof c === "string") {
+        return c;
       }
-      return Object.keys(c).filter((k) => !!c[k])
+      return Object.keys(c).filter((k) => !!c[k]);
     })
-    .join(' ')
-}
-
-export function delay<T>(ms: number, value?: T) {
-  return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
-}
-
-export function draf(cb: FrameRequestCallback) {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(cb)
-  })
+    .join(" ");
 }
 
 export function getServiceApiUrl(
   tenant: Tenant,
   service: Service,
   serviceApi: ServiceApi,
-  authToken: string,
 ) {
-  return `https://${service.id}.${tenant.domain}/api/${serviceApi.url}?auth_token=${authToken}`
+  const url = `https://${service.id}.${tenant.domain}/api/${serviceApi.url}`;
+
+  const { authToken } = tenant;
+  if (authToken) return `${url}?auth_token=${authToken}`;
+
+  return url;
 }
 
-type TimeoutError = DOMException & { name: 'TimeoutError' }
+type TimeoutError = DOMException & { name: "TimeoutError" };
 export function isTimeoutError(err: unknown): err is TimeoutError {
-  return err instanceof DOMException && err.name === 'TimeoutError'
-}
-
-type TryCatchResult<T, E> = [data: T, error: undefined] | [data: undefined, error: E]
-export function tryCatch<T, E = Error>(fn: () => T): TryCatchResult<T, E> {
-  try {
-    return [fn(), undefined]
-  } catch (e: any) {
-    return [undefined, e]
-  }
+  return err instanceof DOMException && err.name === "TimeoutError";
 }

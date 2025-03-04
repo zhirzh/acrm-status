@@ -1,23 +1,17 @@
 export type Tenant = {
-  id: string
-  name: string
-  domain: string
-}
+  id: string;
+  name: string;
+  domain: string;
+  authToken?: string;
+};
 
 export type Service = {
-  id: string
-  name: string
-  apis?: ServiceApi[]
-}
+  id: string;
+  name: string;
+  apis?: ServiceApi[];
+};
 
 export type ServiceApi = {
-  id: string
-  url: string
-}
-
-export type User = {
-  id: number
-  email: string
-  name: string
-  auth_token: string
-}
+  id: string;
+  url: string;
+};

@@ -1,96 +1,56 @@
-import Brand, { brandTitle } from '@/components/Brand'
-import { tenants } from '@/constants'
-import { getTenantCookie, getUser } from '@/helpers'
-import { Metadata } from 'next'
-import { Suspense } from 'react'
-import { authTokenCache, tenantCache, userCache } from './cache'
-import LoginButton from './components/LoginButton'
-import LogoutButton from './components/LogoutButton'
-import NavCrumbs from './components/NavCrumbs'
-import ServiceApiGrid from './components/ServiceApiGrid'
-import ServicesGrid from './components/ServicesGrid'
-
-export const dynamicParams = false
+import Brand, { brandTitle } from "@/components/Brand";
+import { tenants } from "@/constants";
+import { Metadata } from "next";
+import ServiceApisGrid from "./components/ServiceApisGrid";
+import ServicesGrid from "./components/ServicesGrid";
 
 type Params = {
-  tenantId: string
-}
+  tenantId: string;
+};
 
 type Props = {
-  params: Params
-}
+  params: Promise<Params>;
+};
+
+export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return tenants.map<Params>((tenant) => ({ tenantId: tenant.id }))
+  return tenants.map<Params>((tenant) => ({ tenantId: tenant.id }));
 }
 
-export function generateMetadata({ params }: Props): Metadata {
-  const { tenantId } = params
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { tenantId } = await params;
 
-  const tenant = tenants.find((t) => t.id === tenantId)!
+  const tenant = tenants.find((t) => t.id === tenantId)!;
 
   return {
-    title: `${brandTitle} / ${tenant.name}`,
-  }
+    title: `${tenant.name} | ${brandTitle}`,
+  };
 }
 
-export default function ServicesPage({ params }: Props) {
-  const { tenantId } = params
+export default async function ServicesPage({ params }: Props) {
+  const { tenantId } = await params;
 
-  const tenant = tenants.find((t) => t.id === tenantId)!
-  tenantCache.set(tenant)
-
-  const { authToken } = getTenantCookie(tenant)
-  authTokenCache.set(authToken)
+  const tenant = tenants.find((t) => t.id === tenantId)!;
+  const { authToken } = tenant;
 
   return (
-    <div className='p-5 pb-24'>
-      <div className='mx-auto max-w-[700px]'>
-        <div className='mb-3 flex items-start justify-between'>
-          <div>
-            <Brand />
-            <NavCrumbs />
-          </div>
-
-          <Suspense>
-            <UserSection />
-          </Suspense>
+    <div className="p-5 pb-24">
+      <div className="mx-auto max-w-[600px]">
+        <div>
+          <Brand />
+          <h1 className="mt-4 mb-3 text-xl">{tenant.name}</h1>
         </div>
 
-        <ServicesGrid />
+        <ServicesGrid tenant={tenant} />
 
-        <Suspense>
-          <ServiceApiGridSection />
-        </Suspense>
+        {authToken && (
+          <>
+            <h2 className="mt-10 mb-3 text-xl">APIs</h2>
+            <ServiceApisGrid tenant={tenant} />
+          </>
+        )}
       </div>
     </div>
-  )
-}
-
-async function ServiceApiGridSection() {
-  const tenant = tenantCache.get()
-  const authToken = authTokenCache.get()
-
-  const user = await getUser(tenant, authToken)
-  if (!user) {
-    return null
-  }
-
-  userCache.set(user)
-
-  return (
-    <>
-      <h2 className='mb-3 mt-10 text-xl'>APIs</h2>
-      <ServiceApiGrid />
-    </>
-  )
-}
-
-async function UserSection() {
-  const tenant = tenantCache.get()
-  const authToken = authTokenCache.get()
-
-  const user = await getUser(tenant, authToken)
-
-  return user ? <LogoutButton tenant={tenant} user={user} /> : <LoginButton tenant={tenant} />
+  );
 }
