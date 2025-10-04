@@ -3,9 +3,10 @@ import RightArrow from "@/components/RightArrow";
 import { tenants } from "@/constants";
 import { Tenant } from "@/types";
 import { cx } from "@/utils";
+import { Metadata } from "next";
 import Link from "next/link";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: brandTitle,
 };
 
