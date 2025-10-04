@@ -1,8 +1,8 @@
 import { Service, Tenant } from "@/types";
 
 export const acpTenants: Tenant[] = [
-  { id: "acp", name: "Production", domain: "ddp.anarock.com" },
-  { id: "acp-staging", name: "Staging", domain: "staging.ddp.anarock.com" },
+  { id: "acp", name: "ACP", domain: "ddp.anarock.com" },
+  { id: "acp-staging", name: "ACP Staging", domain: "staging.ddp.anarock.com" },
 ];
 
 export const tenants: Tenant[] = [

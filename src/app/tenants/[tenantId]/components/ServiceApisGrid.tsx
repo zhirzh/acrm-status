@@ -1,8 +1,9 @@
 import { fetchServiceApiStatus } from "@/apis";
+import Shimmer from "@/components/Shimmer";
 import { acrmServices } from "@/constants";
 import { Service, ServiceApi, Tenant } from "@/types";
 import { Suspense } from "react";
-import { StatusCard } from "./StatusCard";
+import StatusCard from "./StatusCard";
 
 export default function ServiceApisGrid({ tenant }: { tenant: Tenant }) {
   return (
@@ -11,16 +12,14 @@ export default function ServiceApisGrid({ tenant }: { tenant: Tenant }) {
         s.apis?.map((a) => (
           <div
             key={`${s.id}/${a.id}`}
-            className="flex items-center justify-between rounded-xl bg-white py-5 pr-6 pl-5"
+            className="flex items-center justify-between rounded-xl bg-surface py-5 pr-6 pl-5 highlight-shadow-sm"
           >
             <div>
               <div className="font-mono text-sm">{a.url}</div>
-              <div className="text-sm text-gray-600">{s.name}</div>
+              <div className="text-sm text-muted">{s.name}</div>
             </div>
 
-            <Suspense
-              fallback={<div className="h-4 w-8 rounded-xs bg-slate-200" />}
-            >
+            <Suspense fallback={<Shimmer />}>
               <ServiceApiCardStatus
                 tenant={tenant}
                 service={s}

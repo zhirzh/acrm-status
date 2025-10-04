@@ -15,6 +15,10 @@ export function cx(...classNames: Array<ClassName>) {
     .join(" ");
 }
 
+export async function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 export function getServiceApiUrl(
   tenant: Tenant,
   service: Service,

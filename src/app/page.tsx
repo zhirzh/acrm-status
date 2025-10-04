@@ -33,13 +33,15 @@ function TenantCard({ tenant }: { tenant: Tenant }) {
     <Link
       href={`/tenants/${tenant.id}`}
       className={cx(
-        "flex items-center justify-between rounded-xl bg-white py-4 pr-7 pl-6",
-        "ring-slate-400 outline-none hover:ring focus:ring",
+        "flex items-center justify-between rounded-xl bg-surface py-4 pr-7 pl-6",
+        "highlight-shadow-sm outline-offset-4 outline-a3 transition-[translate,box-shadow]",
+        "hover:-translate-y-0.5 hover:highlight-shadow-md",
+        "focus:-translate-y-0.5 focus:highlight-shadow-md focus-visible:outline",
       )}
     >
       <div>
         <div>{tenant.name}</div>
-        <div className="text-sm text-gray-600">{tenant.domain}</div>
+        <div className="text-sm text-muted">{tenant.domain}</div>
       </div>
 
       <RightArrow />

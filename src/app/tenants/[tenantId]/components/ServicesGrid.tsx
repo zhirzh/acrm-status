@@ -1,25 +1,24 @@
 import { fetchServiceStatus } from "@/apis";
+import Shimmer from "@/components/Shimmer";
 import { acpServices, acrmServices } from "@/constants";
 import { Service, Tenant } from "@/types";
 import { isAcpTenant } from "@/utils";
 import { Suspense } from "react";
-import { StatusCard } from "./StatusCard";
+import StatusCard from "./StatusCard";
 
 export default function ServicesGrid({ tenant }: { tenant: Tenant }) {
   const services = isAcpTenant(tenant) ? acpServices : acrmServices;
 
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-5">
+    <div className="grid grid-cols-1 gap-x-4 gap-y-5 md:grid-cols-2">
       {services.map((s) => (
         <div
           key={s.id}
-          className="flex items-center justify-between rounded-xl bg-white py-5 pr-6 pl-5"
+          className="flex items-center justify-between rounded-xl bg-surface py-5 pr-6 pl-5 highlight-shadow-sm"
         >
           <div>{s.name}</div>
 
-          <Suspense
-            fallback={<div className="h-4 w-8 rounded-xs bg-slate-200" />}
-          >
+          <Suspense fallback={<Shimmer />}>
             <ServiceCardStatus tenant={tenant} service={s} />
           </Suspense>
         </div>
