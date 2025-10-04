@@ -8,6 +8,7 @@ export type Tenant = {
 export type Service = {
   id: string;
   name: string;
+  healthCheck?: string;
   apis?: ServiceApi[];
 };
 

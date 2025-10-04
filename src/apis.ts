@@ -1,6 +1,5 @@
-import { Service, ServiceApi } from "./types";
-import { Tenant } from "./types";
 import { getServiceApiUrl, isTimeoutError } from "@/utils";
+import { Service, ServiceApi, Tenant } from "./types";
 
 const vercelWorkerTimeoutMs = 10 * 1000;
 
@@ -14,7 +13,8 @@ export async function fetchServiceStatus(tenant: Tenant, service: Service) {
     return fetchTestServiceStatus();
   }
 
-  const url = `https://${service.id}.${tenant.domain}/health-check`;
+  const { healthCheck = "/health-check" } = service;
+  const url = `https://${service.id}.${tenant.domain}${healthCheck}`;
 
   const signal = AbortSignal.timeout(vercelWorkerTimeoutMs);
 

@@ -13,8 +13,6 @@ export const tenants: Tenant[] = [
     domain: "anarock.com",
     authToken: "acrm.status.auth",
   },
-  { id: "tech", name: "Tech", domain: "anarock.tech" },
-  { id: "kw", name: "KW", domain: "kwgroup.net" },
   { id: "acp", name: "ACP", domain: "ddp.anarock.com" },
 ];
 
@@ -22,7 +20,11 @@ export const services: Service[] = [
   // { id: "test", name: "TEST" },
   { id: "acl", name: "ACL" },
   { id: "calling", name: "Calling" },
-  { id: "dashboard", name: "Dashboard" },
+  {
+    id: "dashboard",
+    name: "Dashboard",
+    healthCheck: "/api/health-check",
+  },
   {
     id: "data",
     name: "Data",
@@ -60,7 +62,11 @@ export const services: Service[] = [
   { id: "mail", name: "Mail" },
   { id: "meta", name: "Meta" },
   { id: "plutus", name: "Plutus" },
-  { id: "registration", name: "Registration" },
+  {
+    id: "registration",
+    name: "Registration",
+    healthCheck: "/api/health-check",
+  },
   { id: "sms", name: "SMS" },
   { id: "triton", name: "Triton" },
 ];
