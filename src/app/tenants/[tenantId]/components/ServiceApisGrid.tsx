@@ -1,5 +1,5 @@
 import { fetchServiceApiStatus } from "@/apis";
-import { services } from "@/constants";
+import { acrmServices } from "@/constants";
 import { Service, ServiceApi, Tenant } from "@/types";
 import { Suspense } from "react";
 import { StatusCard } from "./StatusCard";
@@ -7,7 +7,7 @@ import { StatusCard } from "./StatusCard";
 export default function ServiceApisGrid({ tenant }: { tenant: Tenant }) {
   return (
     <div className="space-y-5">
-      {services.flatMap((s) =>
+      {acrmServices.flatMap((s) =>
         s.apis?.map((a) => (
           <div
             key={`${s.id}/${a.id}`}

@@ -1,10 +1,13 @@
 import { fetchServiceStatus } from "@/apis";
-import { services } from "@/constants";
+import { acpServices, acrmServices } from "@/constants";
 import { Service, Tenant } from "@/types";
+import { isAcpTenant } from "@/utils";
 import { Suspense } from "react";
 import { StatusCard } from "./StatusCard";
 
 export default function ServicesGrid({ tenant }: { tenant: Tenant }) {
+  const services = isAcpTenant(tenant) ? acpServices : acrmServices;
+
   return (
     <div className="grid grid-cols-2 gap-x-4 gap-y-5">
       {services.map((s) => (

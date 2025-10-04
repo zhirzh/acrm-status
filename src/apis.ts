@@ -1,5 +1,5 @@
+import { Service, ServiceApi, Tenant } from "@/types";
 import { getServiceApiUrl, isTimeoutError } from "@/utils";
-import { Service, ServiceApi, Tenant } from "./types";
 
 const vercelWorkerTimeoutMs = 10 * 1000;
 

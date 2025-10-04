@@ -1,4 +1,4 @@
-import Brand, { brandTitle } from "@/components/Brand";
+import Brand, { acrmBrandTitle } from "@/components/Brand";
 import RightArrow from "@/components/RightArrow";
 import { tenants } from "@/constants";
 import { Tenant } from "@/types";
@@ -7,7 +7,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: brandTitle,
+  title: acrmBrandTitle,
 };
 
 export default function Home() {

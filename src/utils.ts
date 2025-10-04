@@ -1,4 +1,5 @@
-import { Tenant, Service, ServiceApi } from "@/types";
+import { acpTenants } from "@/constants";
+import { Service, ServiceApi, Tenant } from "@/types";
 
 type SkipClassName = boolean | null | undefined;
 type ClassName = string | SkipClassName | Record<string, SkipClassName>;
@@ -25,6 +26,10 @@ export function getServiceApiUrl(
   if (authToken) return `${url}?auth_token=${authToken}`;
 
   return url;
+}
+
+export function isAcpTenant(tenant: Tenant) {
+  return acpTenants.includes(tenant);
 }
 
 type TimeoutError = DOMException & { name: "TimeoutError" };
