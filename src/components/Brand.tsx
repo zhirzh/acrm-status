@@ -9,5 +9,6 @@ export default function Brand({ tenant }: { tenant?: Tenant }) {
     !tenant ? acrmBrandTitle
     : isAcpTenant(tenant) ? acpBrandTitle
     : acrmBrandTitle;
-  return <h1 className="text-2xl">{brandTitle}</h1>;
+
+  return <h1 className="text-3xl">{brandTitle}</h1>;
 }

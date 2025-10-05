@@ -1,6 +1,6 @@
-import Brand, { acrmBrandTitle } from "@/components/Brand";
+import Brand, { acpBrandTitle, acrmBrandTitle } from "@/components/Brand";
 import RightArrow from "@/components/RightArrow";
-import { tenants } from "@/constants";
+import { acpTenants, tenants } from "@/constants";
 import { Tenant } from "@/types";
 import { cx } from "@/utils";
 import { Metadata } from "next";
@@ -18,8 +18,14 @@ export default function Home() {
           <Brand />
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-6">
           {tenants.map((t) => (
+            <TenantCard key={t.id} tenant={t} />
+          ))}
+
+          <h2 className="mt-10 mb-5 text-xl">{acpBrandTitle}</h2>
+
+          {acpTenants.map((t) => (
             <TenantCard key={t.id} tenant={t} />
           ))}
         </div>
@@ -30,21 +36,23 @@ export default function Home() {
 
 function TenantCard({ tenant }: { tenant: Tenant }) {
   return (
-    <Link
-      href={`/tenants/${tenant.id}`}
-      className={cx(
-        "flex items-center justify-between rounded-xl bg-surface py-4 pr-7 pl-6",
-        "highlight-shadow-sm outline-offset-4 outline-a3 transition-[translate,box-shadow]",
-        "hover:-translate-y-0.5 hover:highlight-shadow-md",
-        "focus:-translate-y-0.5 focus:highlight-shadow-md focus-visible:outline",
-      )}
-    >
-      <div>
-        <div>{tenant.name}</div>
-        <div className="text-sm text-muted">{tenant.domain}</div>
-      </div>
+    <div className="group">
+      <Link
+        href={`/${tenant.id}`}
+        className={cx(
+          "flex items-center justify-between rounded-xl bg-surface py-4 pr-7 pl-6 highlight-shadow-sm transition-[translate,box-shadow]",
+          "group-hover:-translate-y-0.5 group-hover:highlight-shadow-md",
+          "focus:-translate-y-0.5 focus:highlight-shadow-md",
+          "outline-offset-4 outline-ring focus-visible:outline",
+        )}
+      >
+        <div>
+          <div>{tenant.name}</div>
+          <div className="text-sm text-muted">{tenant.domain}</div>
+        </div>
 
-      <RightArrow />
-    </Link>
+        <RightArrow />
+      </Link>
+    </div>
   );
 }

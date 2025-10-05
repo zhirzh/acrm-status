@@ -10,7 +10,7 @@ export default function ServicesGrid({ tenant }: { tenant: Tenant }) {
   const services = isAcpTenant(tenant) ? acpServices : acrmServices;
 
   return (
-    <div className="grid grid-cols-1 gap-x-4 gap-y-5 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-x-4 gap-y-5 sm:grid-cols-2">
       {services.map((s) => (
         <div
           key={s.id}

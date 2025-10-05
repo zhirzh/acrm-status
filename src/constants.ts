@@ -1,10 +1,5 @@
 import { Service, Tenant } from "@/types";
 
-export const acpTenants: Tenant[] = [
-  { id: "acp", name: "ACP", domain: "ddp.anarock.com" },
-  { id: "acp-staging", name: "ACP Staging", domain: "staging.ddp.anarock.com" },
-];
-
 export const tenants: Tenant[] = [
   {
     id: "staging",
@@ -14,7 +9,7 @@ export const tenants: Tenant[] = [
   },
   {
     id: "anarock",
-    name: "Anarock",
+    name: "Production",
     domain: "anarock.com",
     authToken: "acrm.status.auth",
   },
@@ -23,7 +18,7 @@ export const tenants: Tenant[] = [
     name: "DDP",
     domain: "ddp.anarock.com",
   },
-  ...acpTenants,
+  // ...acpTenants,
 ];
 
 export const acrmServices: Service[] = [
@@ -81,12 +76,19 @@ export const acrmServices: Service[] = [
   { id: "triton", name: "Triton" },
 ];
 
+export const acpTenants: Tenant[] = [
+  { id: "acp-staging", name: "Staging", domain: "staging.ddp.anarock.com" },
+  { id: "acp", name: "Production", domain: "ddp.anarock.com" },
+];
+
 export const acpServices: Service[] = [
   { id: "auth", name: "Auth", healthCheck: "/docs" },
+  { id: "cms", name: "Commissions", healthCheck: "/docs" },
   { id: "cp", name: "CP", healthCheck: "/docs" },
-  { id: "projects", name: "Projects", healthCheck: "/docs" },
   { id: "ddp-crm", name: "CRM", healthCheck: "/docs" },
-  { id: "masters", name: "Masters", healthCheck: "/docs" },
   { id: "marketing", name: "Marketing", healthCheck: "/docs" },
-  { id: "cms", name: "Commission Management", healthCheck: "/docs" },
+  { id: "masters", name: "Masters", healthCheck: "/docs" },
+  { id: "projects", name: "Projects", healthCheck: "/docs" },
 ];
+
+export const allTenants = [...tenants, ...acpTenants];

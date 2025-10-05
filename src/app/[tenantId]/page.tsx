@@ -1,5 +1,5 @@
 import Brand, { acpBrandTitle, acrmBrandTitle } from "@/components/Brand";
-import { tenants } from "@/constants";
+import { allTenants } from "@/constants";
 import { isAcpTenant } from "@/utils";
 import { Metadata } from "next";
 import ServiceApisGrid from "./components/ServiceApisGrid";
@@ -16,13 +16,13 @@ type Props = {
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return tenants.map<Params>((tenant) => ({ tenantId: tenant.id }));
+  return allTenants.map<Params>((tenant) => ({ tenantId: tenant.id }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tenantId } = await params;
 
-  const tenant = tenants.find((t) => t.id === tenantId)!;
+  const tenant = allTenants.find((t) => t.id === tenantId)!;
   const brandTitle = isAcpTenant(tenant) ? acpBrandTitle : acrmBrandTitle;
 
   return {
@@ -33,22 +33,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ServicesPage({ params }: Props) {
   const { tenantId } = await params;
 
-  const tenant = tenants.find((t) => t.id === tenantId)!;
+  const tenant = allTenants.find((t) => t.id === tenantId)!;
   const { authToken } = tenant;
 
   return (
     <div className="p-5 pb-24">
       <div className="mx-auto max-w-[600px]">
-        <div>
+        <div className="mb-4">
           <Brand tenant={tenant} />
-          <h1 className="mt-4 mb-3 text-xl">{tenant.name}</h1>
+          <h2 className="mt-6 text-xl">{tenant.name}</h2>
         </div>
 
         <ServicesGrid tenant={tenant} />
 
         {authToken && (
           <>
-            <h2 className="mt-10 mb-3 text-xl">APIs</h2>
+            <h3 className="mt-12 mb-4 font-medium">APIs</h3>
             <ServiceApisGrid tenant={tenant} />
           </>
         )}
